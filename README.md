@@ -40,7 +40,37 @@ To run this API, follow these steps:
 
 ## Endpoints
 
-- `/api/stream-video`: Endpoint to stream a video file. Note: You need to provide your own video file. Upload your video file to the `assets` folder and update the code in `index.js` with the correct file name.
+### GET /api/list
+- Description: Get the list of items.
+- Authentication: Not required.
+
+### GET /api/list/:id
+- Description: Get a specific item by ID.
+- Authentication: Not required.
+
+### POST /api/list
+- Description: Add a new item to the list.
+- Authentication: Required (Bearer token: xyzddd).
+
+### PUT /api/list/:id
+- Description: Update an existing item by ID.
+- Authentication: Required (Bearer token: xyzddd).
+
+### DELETE /api/list/:id
+- Description: Delete an item by ID.
+- Authentication: Required (Bearer token: xyzddd).
+
+### GET /api/download
+- Description: Download a sample text file.
+- Authentication: Not required.
+
+### POST /api/upload
+- Description: Upload a file.
+- Authentication: Not required.
+
+### POST /api/stream-video
+- Description: Stream a video file. Note: You need to provide your own video file. Add your video file to the `assets` folder and update the code in `index.js` with the correct file name.
+- Authentication: Required (Bearer token: xyzddd).
 
 ## License
 
