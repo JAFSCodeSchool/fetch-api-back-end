@@ -65,12 +65,26 @@ app.delete("/api/list/:id", authenticate, (req, res) => {
 });
 
 // Route with Response Type as Blob
-app.get("/api/download", (req, res) => {
-  const data = "This is sample text for a text file.";
-  const buffer = Buffer.from(data, "utf-8");
-  res.setHeader("Content-Disposition", 'attachment; filename="sample.txt"');
+app.get("/api/download", authenticate, (req, res) => {
+  const filePath = path.join(__dirname, "assets/YOUR_FILE_NAME.EXT");
+  const fileStream = fs.createReadStream(filePath, { highWaterMark: 64 * 1024 });
+
+  res.setHeader("Content-Disposition", 'attachment; filename="YOUR_FILE_NAME.EXT"');
   res.setHeader("Content-Type", "application/octet-stream");
-  res.send(buffer);
+
+  fileStream.on("error", (err) => {
+    console.error("File stream error:", err);
+    res.status(500).send("Internal Server Error");
+  });
+
+  fileStream.pipe(res);
+
+  fileStream.on("error", (err) => {
+    console.error("File stream error:", err);
+    res.status(500).send("Internal Server Error");
+  });
+
+  fileStream.pipe(res);
 });
 
 // Set up storage for multer
@@ -103,13 +117,22 @@ app.post("/api/upload", (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
-    res.json({ fileName: req.file.filename, filePath: req.file.path, message: "File uploaded successfully" });
+    res.json({
+      fileName: req.file.filename,
+      filePath: req.file.path,
+      message: "File uploaded successfully",
+    });
+    res.json({
+      fileName: req.file.filename,
+      filePath: req.file.path,
+      message: "File uploaded successfully",
+    });
   });
 });
 
 // Stream video route with range support
 app.post("/api/stream-video", authenticate, (req, res) => {
-  const videoPath = path.join(__dirname, "assets", "Async Await.mp4");
+  const videoPath = path.join(__dirname, "assets", "YOUR_FILE_NAME.EXT");
 
   // Check if the video file exists
   if (!fs.existsSync(videoPath)) {
